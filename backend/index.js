@@ -1,8 +1,12 @@
 /** @format */
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 require("dotenv").config();
+
+app.use(cors());
+app.use(express.json());
 
 const port = process.env.PORT || 4000;
 
@@ -31,7 +35,7 @@ const History = [
                     ## OUTPUT RULES:
 
                     * Format your output clearly (e.g., using bullet points).
-                    * Always include a YouTube link for the song (e.g., https://www.youtube.com/results?search_query=Song+Name+Artist).
+                    * Always include a clickable YouTube link for the song formatted in Markdown (e.g., [Listen on YouTube](https://www.youtube.com/results?search_query=Song+Name+Artist)).
                     * You do not need to create files or run terminal commands. Just respond with text.
                     `,
   },
@@ -55,38 +59,30 @@ async function runAgent(userProblem) {
       role: "assistant",
       content: message.content,
     });
-    console.log(message.content);
     return message.content;
   } catch (e) {
     console.log("An API error occurred: ", e.message);
   }
 }
 
-async function main() {
-  console.log("i am Glider : let's recommend some music");
-
-  const rl = require("readline/promises").createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  const askQuestion = async () => {
-    try {
-      const userProblem = await rl.question("Ask me anything -> ");
-      await runAgent(userProblem);
-
-      // Call askQuestion again after answering
-      askQuestion();
-    } catch (err) {
-      console.error(err);
-      rl.close();
+// Chat route
+app.post("/api/chat", async (req, res) => {
+  try {
+    const userMessage = req.body.message;
+    if (!userMessage) {
+      return res.status(400).json({ error: "Message is required" });
     }
-  };
+    const reply = await runAgent(userMessage);
+    res.json({ reply });
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-  askQuestion();
-}
-main();
+// health route
+app.get("/", (req, res) => {
+  res.send("helo jee");
+});
 
-// healt route
-
-//app.listen(port, () => console.log(`server is running on port ${port}`));
+app.listen(port, () => console.log(`server is running on port ${port}`));
