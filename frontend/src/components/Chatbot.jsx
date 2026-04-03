@@ -48,7 +48,7 @@ function Chatbot() {
     return (
         <div className="flex flex-col w-full max-w-2xl h-[80vh] mx-auto border border-gray-200 rounded-xl bg-gray-50 shadow-lg overflow-hidden font-sans">
             <div className="bg-slate-700 text-white p-4 text-center text-xl font-bold">
-                🎵 Glider Music Recommender
+                🎵 NayaSur Music Recommender
             </div>
             <MessageList messages={messages} loading={loading} />
             <MessageInput onSend={handleSendMessage} loading={loading} />
