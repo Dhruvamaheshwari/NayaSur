@@ -100,9 +100,19 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// health route
-app.get("/", (req, res) => {
-  res.send("helo jee");
+const path = require("path");
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+// health route for API
+app.get("/api/health", (req, res) => {
+  res.send("helo jee API");
+});
+
+// React app catch-all
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
 app.listen(port, () => console.log(`server is running on port ${port}`));
