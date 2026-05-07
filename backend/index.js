@@ -110,6 +110,10 @@ app.get("/api/health", (req, res) => {
   res.send("helo jee API");
 });
 
+app.get('/' , (req  ,res)=>{
+  res.send('hello aws is working....')
+})
+
 // React app catch-all
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
