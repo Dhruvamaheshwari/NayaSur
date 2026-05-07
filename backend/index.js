@@ -115,7 +115,7 @@ app.get('/' , (req  ,res)=>{
 })
 
 // React app catch-all
-app.get("*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
