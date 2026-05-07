@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 
-const API_URL = "http://localhost:4000/api/chat";
+const API_URL = "/api/chat";
 
 const SUGGESTED_PROMPTS = [
     {
